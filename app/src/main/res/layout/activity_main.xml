@@ -4,19 +4,73 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
+
+    <LinearLayout
+        android:id="@+id/ll_chat_tittle"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="#770098"
+        android:gravity="center"
+        android:paddingTop="20dp">
+
+        <ImageView
+            android:id="@+id/iv_chat_tittle_back"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:src="@mipmap/ic_back" />
+
+        <TextView
+            android:id="@+id/tv_chat_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="登录"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/iv_chat_message_no_disturb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="14dp"
+            android:src="@mipmap/chat_message_no_disturb"
+            android:tint="@color/white"
+            android:visibility="gone" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:id="@+id/iv_chat_more_page"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:paddingRight="20dp"
+            android:src="@mipmap/chat_more_page"
+            android:visibility="invisible" />
+    </LinearLayout>
 
     <EditText
         android:id="@+id/et_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="输入密码" />
+        android:hint="输入账号" />
 
     <EditText
         android:id="@+id/et_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="输入账号" />
+        android:hint="输入密码" />
+
+    <EditText
+        android:id="@+id/et_chat_account"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入跟谁聊天的账号"
+        android:text="xiayiye" />
 
     <Button
         android:id="@+id/bt_create"

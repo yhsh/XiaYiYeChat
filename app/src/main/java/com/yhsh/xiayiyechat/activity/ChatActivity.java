@@ -40,7 +40,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
         //注册消息接收事件
         JMessageClient.registerEventReceiver(this);
-        conversation = Conversation.createSingleConversation("xiayiye");
+        conversation = Conversation.createSingleConversation(getIntent().getStringExtra("user_id"));
         allMessage = conversation.getAllMessage();
         rvList = findViewById(R.id.rv_list);
         rvList.setLayoutManager(new LinearLayoutManager(this));

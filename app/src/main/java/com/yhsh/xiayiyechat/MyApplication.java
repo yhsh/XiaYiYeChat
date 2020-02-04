@@ -43,9 +43,16 @@ import cn.jpush.im.android.api.JMessageClient;
  * 文件说明：
  */
 public class MyApplication extends Application {
+    private static Application context;
+
     @Override
     public void onCreate() {
         super.onCreate();
         JMessageClient.init(this, true);
+        context = this;
+    }
+
+    public static Application getMyContext() {
+        return context;
     }
 }

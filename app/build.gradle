@@ -5,7 +5,7 @@ android {
     buildToolsVersion "29.0.0"
     defaultConfig {
         applicationId "com.yhsh.xiayiyechat"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -36,5 +36,9 @@ dependencies {
     implementation 'cn.jiguang.sdk:jmessage:2.9.0'  // 此处以JMessage 2.9.0 版本为例。
     implementation 'cn.jiguang.sdk:jcore:2.0.0'  // 此处以JCore 2.0.0 版本为例。
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha01'
+    //图片选择器
+    implementation 'com.lcw.library:imagepicker:2.2.7'
+    implementation 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 }

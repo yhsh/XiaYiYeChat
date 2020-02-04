@@ -11,13 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".activity.ChatActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Since JCore2.0.0 Required SDK核心功能 -->
+        </activity>
+        <activity android:name=".activity.ChatPageVideoPlayActivity" />
+        <activity android:name=".activity.PrivateChatActivity" /> <!-- Since JCore2.0.0 Required SDK核心功能 -->
         <!-- 这个Service要继承JCommonService -->
         <service
             android:name=".MyService"
