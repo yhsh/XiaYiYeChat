@@ -25,6 +25,7 @@ import com.yhsh.xiayiyechat.R;
 import com.yhsh.xiayiyechat.adapter.ChatMessageAdapter;
 import com.yhsh.xiayiyechat.util.AndroidUtils;
 import com.yhsh.xiayiyechat.util.GlideLoader;
+import com.yhsh.xiayiyechat.util.HeadPictureUtil;
 import com.yhsh.xiayiyechat.util.PlayVoiceUtil;
 import com.yhsh.xiayiyechat.util.TakePhotoUtil;
 import com.yhsh.xiayiyechat.util.ToastUtil;
@@ -104,7 +105,7 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
                 allMessageBeanList.add(new JgMessageBean().setMessage(message));
             }
             rvChatList.setLayoutManager(new LinearLayoutManager(this));
-            chatMessageAdapter = new ChatMessageAdapter(allMessageBeanList, "http://image.biaobaiju.com/uploads/20180122/22/1516629810-pnBjHQktMi.jpg");
+            chatMessageAdapter = new ChatMessageAdapter(allMessageBeanList, HeadPictureUtil.getInstance().getReceiveHeadUrl());
             rvChatList.setAdapter(chatMessageAdapter);
             rvChatList.scrollToPosition(allMessage.size() - 1);
             initRecord();

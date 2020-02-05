@@ -57,13 +57,15 @@
         android:id="@+id/et_account"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="输入账号" />
+        android:hint="输入账号"
+        android:text="qingfeiyang" />
 
     <EditText
         android:id="@+id/et_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="输入密码" />
+        android:hint="输入密码"
+        android:text="123456" />
 
     <EditText
         android:id="@+id/et_chat_account"

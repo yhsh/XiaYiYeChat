@@ -13,9 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.yhsh.xiayiyechat.bean.JgMessageBean;
 import com.yhsh.xiayiyechat.MyApplication;
 import com.yhsh.xiayiyechat.R;
+import com.yhsh.xiayiyechat.bean.JgMessageBean;
+import com.yhsh.xiayiyechat.util.HeadPictureUtil;
 
 import java.io.File;
 import java.util.List;
@@ -38,10 +39,12 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
     private List<JgMessageBean> allMessage;
     private String avatar;
     private Message message;
+    private final String sendHeadUrl;
 
     public ChatMessageAdapter(List<JgMessageBean> allMessage, String avatar) {
         this.allMessage = allMessage;
         this.avatar = avatar;
+        sendHeadUrl = HeadPictureUtil.getInstance().getSendHeadUrl();
     }
 
     @NonNull
@@ -68,8 +71,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             //拿到发送的消息
             setMsgType(holder, allContent, holder.tvContentSend, holder.ivSendMessageImg, holder.ivSendMessageVideo, holder.ivSendMessageVoice, holder.ivSendMessageVideoPlay, holder.rlSendVideo, holder.llSendVoiceContent, holder.tvSendVoiceLength);
             //取出个人头像地址
-            String headUrl = "http://image.biaobaiju.com/uploads/20180122/22/1516629810-pnBjHQktMi.jpg";
-            Glide.with(holder.itemView.getContext()).load(headUrl).into(holder.ivSendHead);
+            Glide.with(holder.itemView.getContext()).load(sendHeadUrl).into(holder.ivSendHead);
             if (allMessage.get(position).isShowBar()) {
                 holder.pbSendBar.setVisibility(View.VISIBLE);
             } else {
