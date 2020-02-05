@@ -7,11 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.yhsh.xiayiyechat.bean.JgMessageBean;
 import com.yhsh.xiayiyechat.MyApplication;
 import com.yhsh.xiayiyechat.R;
 
@@ -33,11 +35,11 @@ import cn.jpush.im.android.api.model.Message;
  * @author 下一页5
  */
 public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.MessageViewHolder> {
-    private List<Message> allMessage;
+    private List<JgMessageBean> allMessage;
     private String avatar;
     private Message message;
 
-    public ChatMessageAdapter(List<Message> allMessage, String avatar) {
+    public ChatMessageAdapter(List<JgMessageBean> allMessage, String avatar) {
         this.allMessage = allMessage;
         this.avatar = avatar;
     }
@@ -56,7 +58,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull MessageViewHolder holder, int position) {
-        message = allMessage.get(position);
+        message = allMessage.get(position).getMessage();
         MessageContent allContent = message.getContent();
         if (message.getDirect() == MessageDirect.receive) {
             //拿到接收的消息
@@ -68,6 +70,11 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             //取出个人头像地址
             String headUrl = "http://image.biaobaiju.com/uploads/20180122/22/1516629810-pnBjHQktMi.jpg";
             Glide.with(holder.itemView.getContext()).load(headUrl).into(holder.ivSendHead);
+            if (allMessage.get(position).isShowBar()) {
+                holder.pbSendBar.setVisibility(View.VISIBLE);
+            } else {
+                holder.pbSendBar.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -160,7 +167,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
 
     @Override
     public int getItemViewType(int position) {
-        Message msg = allMessage.get(position);
+        Message msg = allMessage.get(position).getMessage();
         if (msg.getDirect() == MessageDirect.send) {
             //拿到发送的消息
             return 0;
@@ -190,6 +197,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
         private final LinearLayout llReceiveVoiceContent;
         private final TextView tvReceiveVoiceLength;
         private final TextView tvSendVoiceLength;
+        private final ProgressBar pbSendBar;
 
         public MessageViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -211,6 +219,7 @@ public class ChatMessageAdapter extends RecyclerView.Adapter<ChatMessageAdapter.
             llReceiveVoiceContent = itemView.findViewById(R.id.ll_receive_voice_content);
             tvSendVoiceLength = itemView.findViewById(R.id.tv_send_voice_length);
             tvReceiveVoiceLength = itemView.findViewById(R.id.tv_receive_voice_length);
+            pbSendBar = itemView.findViewById(R.id.pb_send_bar);
         }
     }
 

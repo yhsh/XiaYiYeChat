@@ -19,11 +19,12 @@ import android.widget.Toast;
 
 import com.lcw.library.imagepicker.ImagePicker;
 import com.lcw.library.imagepicker.utils.MediaFileUtil;
-import com.yhsh.xiayiyechat.util.AndroidUtils;
-import com.yhsh.xiayiyechat.util.GlideLoader;
+import com.yhsh.xiayiyechat.bean.JgMessageBean;
 import com.yhsh.xiayiyechat.MyApplication;
 import com.yhsh.xiayiyechat.R;
 import com.yhsh.xiayiyechat.adapter.ChatMessageAdapter;
+import com.yhsh.xiayiyechat.util.AndroidUtils;
+import com.yhsh.xiayiyechat.util.GlideLoader;
 import com.yhsh.xiayiyechat.util.PlayVoiceUtil;
 import com.yhsh.xiayiyechat.util.TakePhotoUtil;
 import com.yhsh.xiayiyechat.util.ToastUtil;
@@ -67,6 +68,7 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
     private EditText etInputChatText;
     private Conversation conversation;
     private List<Message> allMessage;
+    private List<JgMessageBean> allMessageBeanList = new ArrayList<>();
     private ChatMessageAdapter chatMessageAdapter;
     private ImageView ivChatTakePhoto;
     private ImageView ivChatSelectImage;
@@ -98,8 +100,11 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
             JMessageClient.registerEventReceiver(this);
             conversation = Conversation.createSingleConversation(userId);
             allMessage = conversation.getAllMessage();
+            for (Message message : allMessage) {
+                allMessageBeanList.add(new JgMessageBean().setMessage(message));
+            }
             rvChatList.setLayoutManager(new LinearLayoutManager(this));
-            chatMessageAdapter = new ChatMessageAdapter(allMessage, "http://image.biaobaiju.com/uploads/20180122/22/1516629810-pnBjHQktMi.jpg");
+            chatMessageAdapter = new ChatMessageAdapter(allMessageBeanList, "http://image.biaobaiju.com/uploads/20180122/22/1516629810-pnBjHQktMi.jpg");
             rvChatList.setAdapter(chatMessageAdapter);
             rvChatList.scrollToPosition(allMessage.size() - 1);
             initRecord();
@@ -111,7 +116,12 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
         tvSound.onNewMessage = new SoundTextView.OnNewMessage() {
             @Override
             public void newMessage(Message message) {
-                msgIsSuccess(message);
+                //添加语音消息显示进度条
+                allMessageBeanList.add(new JgMessageBean().setMessage(message).setShowBar(true));
+                chatMessageAdapter.notifyDataSetChanged();
+                int position = allMessageBeanList.size() - 1;
+                rvChatList.scrollToPosition(position);
+                msgIsSuccess(message,position);
             }
         };
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -131,17 +141,16 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
         });
     }
 
-    private void msgIsSuccess(final Message message) {
+    private void msgIsSuccess(final Message message, final int position) {
         message.setOnSendCompleteCallback(new BasicCallback() {
             @Override
             public void gotResult(int i, String s) {
                 if (i == 0) {
-                    //语音发送成功
+                    //语音发送成功,隐藏进度条
                     Toast.makeText(MyApplication.getMyContext(), "语音发送成功", Toast.LENGTH_LONG).show();
                     Log.e("打印语音", "语音发送成功");
-                    allMessage.add(message);
+                    allMessageBeanList.get(position).setShowBar(false);
                     chatMessageAdapter.notifyDataSetChanged();
-                    rvChatList.scrollToPosition(allMessage.size() - 1);
                 }
             }
         });
@@ -160,7 +169,7 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
             public void playVideo(int position) {
                 ToastUtil.show("点击了" + position);
                 Intent intent = new Intent(PrivateChatActivity.this, ChatPageVideoPlayActivity.class);
-                intent.putExtra("video_path", ((VideoContent) allMessage.get(position).getContent()).getVideoLocalPath());
+                intent.putExtra("video_path", ((VideoContent) allMessageBeanList.get(position).getMessage().getContent()).getVideoLocalPath());
                 startActivity(intent);
             }
         });
@@ -170,7 +179,7 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
             public void showImage(int position) {
                 ToastUtil.show("点击了" + position);
                 Intent intent = new Intent(PrivateChatActivity.this, ChatPageVideoPlayActivity.class);
-                intent.putExtra("img_path", ((ImageContent) allMessage.get(position).getContent()).getLocalPath());
+                intent.putExtra("img_path", ((ImageContent) allMessageBeanList.get(position).getMessage().getContent()).getLocalPath());
                 startActivity(intent);
             }
         });
@@ -282,17 +291,21 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
                     File videoFile = new File(selectedImgPath.get(0));
                     try {
                         VideoContent videoContent = new VideoContent(null, null, videoFile, videoFile.getName(), 10000);
-                        final Message videoMessage = conversation.createSendMessage(videoContent);
+                        Message videoMessage = conversation.createSendMessage(videoContent);
+                        //发送视频消息显示发送进度条
+                        allMessageBeanList.add(new JgMessageBean().setMessage(videoMessage).setShowBar(true));
+                        chatMessageAdapter.notifyDataSetChanged();
+                        final int position = allMessageBeanList.size() - 1;
+                        rvChatList.scrollToPosition(position);
                         JMessageClient.sendMessage(videoMessage);
                         videoMessage.setOnSendCompleteCallback(new BasicCallback() {
                             @Override
                             public void gotResult(int i, String s) {
                                 if (i == 0) {
-                                    //视频发送成功
+                                    //视频发送成功，隐藏进度条
+                                    allMessageBeanList.get(position).setShowBar(false);
                                     Toast.makeText(PrivateChatActivity.this, "视频发送成功", Toast.LENGTH_LONG).show();
-                                    allMessage.add(videoMessage);
                                     chatMessageAdapter.notifyDataSetChanged();
-                                    rvChatList.scrollToPosition(allMessage.size() - 1);
                                 }
                             }
                         });
@@ -332,17 +345,20 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
     }
 
     private void startSendMsg(final ImageContent imageContent) {
-        final Message imgMessage = conversation.createSendMessage(imageContent);
+        Message imgMessage = conversation.createSendMessage(imageContent);
+        allMessageBeanList.add(new JgMessageBean().setMessage(imgMessage).setShowBar(true));
+        chatMessageAdapter.notifyDataSetChanged();
+        final int position = allMessageBeanList.size() - 1;
+        rvChatList.scrollToPosition(position);
         JMessageClient.sendMessage(imgMessage);
         imgMessage.setOnSendCompleteCallback(new BasicCallback() {
             @Override
             public void gotResult(int i, String s) {
                 if (i == 0) {
-                    //发送成功
+                    //发送成功,隐藏进度条
+                    allMessageBeanList.get(position).setShowBar(false);
                     Toast.makeText(PrivateChatActivity.this, "图片发送成功", Toast.LENGTH_LONG).show();
-                    allMessage.add(imgMessage);
                     chatMessageAdapter.notifyDataSetChanged();
-                    rvChatList.scrollToPosition(allMessage.size() - 1);
                 }
             }
         });
@@ -357,23 +373,26 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
                 Toast.makeText(this, "请输入消息再点击发送", Toast.LENGTH_LONG).show();
             } else {
                 TextContent textContent = new TextContent(sendMsg);
-                final Message message = conversation.createSendMessage(textContent);
-                message.setOnSendCompleteCallback(new BasicCallback() {
+                Message textMessage = conversation.createSendMessage(textContent);
+                //添加消息到集合,显示发送进度条
+                allMessageBeanList.add(new JgMessageBean().setMessage(textMessage).setShowBar(true));
+                etInputChatText.setText("");
+                chatMessageAdapter.notifyDataSetChanged();
+                final int position = allMessageBeanList.size() - 1;
+                rvChatList.scrollToPosition(position);
+                textMessage.setOnSendCompleteCallback(new BasicCallback() {
                     @Override
                     public void gotResult(int i, String s) {
                         if (i == 0) {
-                            //发送成功
-                            etInputChatText.setText("");
-                            //添加消息到集合
-                            allMessage.add(message);
+                            //发送成功，隐藏发送进度条
+                            allMessageBeanList.get(position).setShowBar(false);
                             chatMessageAdapter.notifyDataSetChanged();
-                            rvChatList.scrollToPosition(allMessage.size() - 1);
                         } else {
                             Toast.makeText(PrivateChatActivity.this, s, Toast.LENGTH_LONG).show();
                         }
                     }
                 });
-                JMessageClient.sendMessage(message);
+                JMessageClient.sendMessage(textMessage);
             }
         }
         return false;

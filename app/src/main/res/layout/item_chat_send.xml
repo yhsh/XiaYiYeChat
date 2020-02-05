@@ -14,6 +14,7 @@
         android:src="@drawable/ic_launcher_background" />
 
     <RelativeLayout
+        android:id="@+id/rl_chat_all_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginRight="5dp"
@@ -94,4 +95,13 @@
         </LinearLayout>
     </RelativeLayout>
 
+    <ProgressBar
+        android:id="@+id/pb_send_bar"
+        style="@android:style/Widget.ProgressBar.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/rl_chat_all_content"
+        android:visibility="gone" />
 </RelativeLayout>
