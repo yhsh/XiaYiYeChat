@@ -4,12 +4,12 @@
 账号1 ：qingfeiyang 密码：123456
 账号2：xiayiye 密码：123456
 ## V1.0.0<br/>
-第一次将极光IM聊天的基础总结下
-1.增加文字聊天
-2.发送图片，可以点击图片查看大图
-3.发送视频，可以点击播放视频
-4.发送语音，可以点击试听语音
-5.增加发送中的进度条显示
+第一次将极光IM聊天的基础总结下<br/>
+1.增加文字聊天<br/>
+2.发送图片，可以点击图片查看大图<br/>
+3.发送视频，可以点击播放视频<br/>
+4.发送语音，可以点击试听语音<br/>
+5.增加发送中的进度条显示<br/>
 ##### 图片预览
-![Alt](https://imgconvert.csdnimg.cn/aHR0cDovL3lzLWsueXMxNjguY29tLzMyNTM0MjU1MS9tS2prc2pzNDQzNzIyN0o0R09VTC9kZXZpY2UtMjAyMC0wMi0xMC0xNDEyNTIucG5n?x-oss-process=image/format,png)
-![Alt](https://imgconvert.csdnimg.cn/aHR0cDovL3lzLWsueXMxNjguY29tLzMyNTM0MjU1Mi9xNjM1MzM2NkgzSU5XSW1Lamtzai9kZXZpY2UtMjAyMC0wMi0xMC0xNDEzNDYucG5n?x-oss-process=image/format,png)
+登录：![Alt](http://ys-k.ys168.com/325342551/mKjksjs4437227J4GOUL/device-2020-02-10-141252.png)
+聊天：![Alt](http://ys-k.ys168.com/325342552/q6353366H3INWImKjksj/device-2020-02-10-141346.png)
