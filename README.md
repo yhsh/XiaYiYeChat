@@ -11,5 +11,5 @@
 4.发送语音，可以点击试听语音<br/>
 5.增加发送中的进度条显示<br/>
 ##### 图片预览
-登录：![登录](https://github.com/yhsh/XiaYiYeChat/blob/master/screenshot/device-2020-02-10-141252.png)
-聊天：![聊天](https://github.com/yhsh/XiaYiYeChat/blob/master/screenshot/device-2020-02-10-141346.png)
+登录：![登录](https://raw.githubusercontent.com/yhsh/XiaYiYeChat/master/screenshot/device-2020-02-10-141252.png)
+聊天：![聊天](https://raw.githubusercontent.com/yhsh/XiaYiYeChat/master/screenshot/device-2020-02-10-141346.png)
