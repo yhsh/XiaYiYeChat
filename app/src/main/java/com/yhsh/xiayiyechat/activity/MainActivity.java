@@ -28,6 +28,8 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Vie
     private String accountChat;
     private static final int GET_RECODE_AUDIO = 1;
     private static String[] PERMISSION_AUDIO = {Manifest.permission.RECORD_AUDIO};
+    private int type;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +64,12 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Vie
     @Override
     public void loginSuccess(String s) {
         Toast.makeText(this, s, Toast.LENGTH_LONG).show();
-        //跳转首页
-//        startActivity(new Intent(this, ChatActivity.class));
-        Intent intent = new Intent(this, PrivateChatActivity.class);
-        intent.putExtra("user_id", accountChat);
+        if (type == 1) {
+            intent = new Intent(this, ChatListActivity.class);
+        } else {
+            intent = new Intent(this, PrivateChatActivity.class);
+            intent.putExtra("user_id", accountChat);
+        }
         startActivity(intent);
     }
 
@@ -78,14 +82,11 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Vie
         EditText etAccount = findViewById(R.id.et_account);
         EditText etPwd = findViewById(R.id.et_pwd);
         accountChat = etChatAccount.getText().toString().trim();
-        if (TextUtils.isEmpty(accountChat)) {
-            ToastUtil.show("聊天账号不能为空！,没有账号可输入默认账号：xiayiye");
-            return;
-        }
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         if (loginPresenter.inject(account, pwd)) {
             loginPresenter.login(account, pwd);
+            type = 1;
         }
     }
 
@@ -95,10 +96,6 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Vie
         String account = etAccount.getText().toString();
         String pwd = etPwd.getText().toString();
         accountChat = etChatAccount.getText().toString().trim();
-        if (TextUtils.isEmpty(accountChat)) {
-            ToastUtil.show("聊天账号不能为空！,没有账号可输入默认账号：xiayiye");
-            return;
-        }
         if (loginPresenter.inject(account, pwd)) {
             loginPresenter.register(account, pwd);
         }
@@ -108,6 +105,22 @@ public class MainActivity extends AppCompatActivity implements LoginContract.Vie
         int permission = ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO);
         if (permission != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, PERMISSION_AUDIO, GET_RECODE_AUDIO);
+        }
+    }
+
+    public void clickLoginSend(View view) {
+        EditText etAccount = findViewById(R.id.et_account);
+        EditText etPwd = findViewById(R.id.et_pwd);
+        accountChat = etChatAccount.getText().toString().trim();
+        if (TextUtils.isEmpty(accountChat)) {
+            ToastUtil.show("聊天账号不能为空！,没有账号可输入默认账号：xiayiye");
+            return;
+        }
+        String account = etAccount.getText().toString();
+        String pwd = etPwd.getText().toString();
+        if (loginPresenter.inject(account, pwd)) {
+            loginPresenter.login(account, pwd);
+            type = 2;
         }
     }
 }

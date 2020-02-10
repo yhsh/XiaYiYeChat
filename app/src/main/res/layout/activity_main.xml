@@ -86,7 +86,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:onClick="clickLogin"
-        android:text="登录" />
+        android:text="登录消息列表" />
+
+    <Button
+        android:id="@+id/bt_login_send_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="clickLoginSend"
+        android:text="登录发消息" />
 
     <TextView
         android:layout_width="match_parent"
