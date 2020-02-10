@@ -18,3 +18,7 @@
 ![登录](https://github.com/yhsh/XiaYiYeChat/blob/master/screenshot/device-2020-02-10-141252.png)
 
 ![聊天](https://github.com/yhsh/XiaYiYeChat/blob/master/screenshot/device-2020-02-10-141346.png)
+
+![聊天列表](https://raw.githubusercontent.com/yhsh/XiaYiYeChat/master/screenshot/device-2020-02-10-161946.png)
+
+![聊天列表](https://github.com/yhsh/XiaYiYeChat/blob/master/screenshot/device-2020-02-10-161946.png)
