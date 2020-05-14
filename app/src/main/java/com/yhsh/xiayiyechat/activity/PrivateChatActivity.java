@@ -1,7 +1,9 @@
 package com.yhsh.xiayiyechat.activity;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -19,10 +21,10 @@ import android.widget.Toast;
 
 import com.lcw.library.imagepicker.ImagePicker;
 import com.lcw.library.imagepicker.utils.MediaFileUtil;
-import com.yhsh.xiayiyechat.bean.JgMessageBean;
 import com.yhsh.xiayiyechat.MyApplication;
 import com.yhsh.xiayiyechat.R;
 import com.yhsh.xiayiyechat.adapter.ChatMessageAdapter;
+import com.yhsh.xiayiyechat.bean.JgMessageBean;
 import com.yhsh.xiayiyechat.util.AndroidUtils;
 import com.yhsh.xiayiyechat.util.GlideLoader;
 import com.yhsh.xiayiyechat.util.HeadPictureUtil;
@@ -39,6 +41,8 @@ import java.util.Locale;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import cn.jpush.im.android.api.JMessageClient;
@@ -122,7 +126,7 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
                 chatMessageAdapter.notifyDataSetChanged();
                 int position = allMessageBeanList.size() - 1;
                 rvChatList.scrollToPosition(position);
-                msgIsSuccess(message,position);
+                msgIsSuccess(message, position);
             }
         };
         AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -220,7 +224,13 @@ public class PrivateChatActivity extends AppCompatActivity implements View.OnCli
                 showRecordBtn();
                 break;
             case R.id.iv_chat_take_photo:
-                takePhotoPath = TakePhotoUtil.openCamera(this, SELECT_CAMERA_CODE);
+                //先判断是否有权限
+                if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, 1000);
+                } else {
+                    //有权限再打开相机
+                    takePhotoPath = TakePhotoUtil.openCamera(this, SELECT_CAMERA_CODE);
+                }
                 break;
             case R.id.iv_chat_select_image:
                 sendImageMsg();
